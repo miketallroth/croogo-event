@@ -1,14 +1,11 @@
 # Croogo: Event Plugin
 
-**Event** is a free, open source, event manager that sits on top of the Croogo content management system for PHP, released under [MIT License].
+**Event** is a free, open source, event manager that sits on top of the Croogo content management system for PHP, released under [MIT License]. Forked from [thoth/event](http://github.com/thoth/event), the approach of this plugin is to utilize a Node type called 'Event', and limit date/time stamping to nodes of that type.
 
 It is powered by [CakePHP](http://cakephp.org) MVC framework.
 
 ## Requirements
-  * Apache with mod_rewrite
-  * PHP 5.2 or higher
-  * MySQL 4.1 or higher
-  * Croogo 1.5 or higher
+  * Croogo 2.0 or higher
 
 ## Installation
 
@@ -18,13 +15,12 @@ It is powered by [CakePHP](http://cakephp.org) MVC framework.
 
 #### Manual installation
 
-  * Extract the archive. Upload the content to your Croogo installation in the ./app/Plugins/Event directory.
-  `# git clone https://github.com/thoth/event.git ./app/Plugin/Event`
+  * # git clone https://github.com/miketallroth/croogo-event.git ./Plugin/Event`
   * visit Croogo's extension system to "activate" the plugin.
 
 ## Usage
 
-  * From a node admin add/edit page you will have a new tab "Event".
+  * From an event (node type) admin add/edit page you will have a new tab "Event".
   * Add a start (and end date if appropriate; otherwise leave blank)
   * Save as normal
   * Event will appear by default on a calendar at //your-site.com/events
@@ -34,6 +30,4 @@ It is powered by [CakePHP](http://cakephp.org) MVC framework.
 
 ## Links
 
-  * **Official website**: [http://www.claritymediasolutions.com](http://www.claritymediasolutions.com/)
-  * **Downloads**: [https://github.com/thoth/event/downloads](https://github.com/thoth/event/downloads)
-  
+  * **Official website**: [http://www.github.com/miketallroth/croogo-event](http://www.github.com/miketallroth/croogo-event)

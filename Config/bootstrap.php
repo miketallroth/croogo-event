@@ -4,59 +4,45 @@
  *
  * example_routes.php will be loaded in main app/config/routes.php file.
  */
-	Croogo::hookRoutes('Event');
+    Croogo::hookRoutes('Event');
 /**
  * Behavior
  *
- * This plugin's Example behavior will be attached whenever Node model is loaded.
+ * This plugin's Event behavior will be attached whenever Node model is loaded.
+ * This shouldn't be necessary because we can use hookModelProperty below.
  */
-	Croogo::hookBehavior('Node', 'Event.Event', array());
-	Croogo::hookModelProperty('Node', 'hasOne', array('Event'));
+    //Croogo::hookBehavior('Nodes.Node', 'Event.Event');
+
+/**
+ * hasOne relationship
+ *
+ * Define it conditional on the Node being of type event.
+ */
+    Croogo::hookModelProperty('Node', 'hasOne', array('Event' => array(
+        'className' => 'Event.Event',
+        'foreignKey' => 'node_id',
+        'conditions' => array('Node.type' => 'event'),
+    )));
 
 /**
  * Component
  *
- * This plugin's Example component will be loaded in ALL controllers.
+ * This plugin's Event component will be loaded in ALL controllers.
  */
-	Croogo::hookComponent('Nodes', 'Event.Event');
+    Croogo::hookComponent('Nodes', 'Event.Event');
 /**
  * Helper
  *
- * This plugin's Example helper will be loaded via NodesController.
+ * This plugin's Event helper will be loaded via NodesController.
  */
-	Croogo::hookHelper('Nodes', 'Event.Event');
-/**
- * Admin menu (navigation)
- *
- * This plugin's admin_menu element will be rendered in admin panel under Extensions menu.
- */
-//    Croogo::hookAdminMenu('Example');
-/**
- * Admin row action
- *
- * When browsing the content list in admin panel (Content > List),
- * an extra link called 'Example' will be placed under 'Actions' column.
- */
-//    Croogo::hookAdminRowAction('Nodes/admin_index', 'Event', 'plugin:event/controller:event/action:index/:id');
+    //Croogo::hookHelper('Nodes', 'Event.Event');
 /**
  * Admin tab
  *
  * When adding/editing Content (Nodes),
- * an extra tab with title 'Example' will be shown with markup generated from the plugin's admin_tab_node element.
+ * an extra tab with title 'Event' will be shown with markup generated from the plugin's admin_tab_node element.
  *
  * Useful for adding form extra form fields if necessary.
  */
-	Croogo::hookAdminTab('Nodes/admin_add', 'Event', 'event.admin_tab_node_add');
-	Croogo::hookAdminTab('Nodes/admin_edit', 'Event', 'event.admin_tab_node');
-
-
-	CroogoNav::add('settings.children.event', array(
-		'title' => 'Events',
-		'url' => array(
-			'admin' => true,
-			'plugin' => 'settings',
-			'controller' => 'settings',
-			'action' => 'prefix',
-			'Event',
-		),
-	));
+    Croogo::hookAdminTab('Nodes/admin_add', 'Event', 'event.admin_tab_node_add', array('type'=>array('event')));
+    Croogo::hookAdminTab('Nodes/admin_edit', 'Event', 'event.admin_tab_node', array('type'=>array('event')));

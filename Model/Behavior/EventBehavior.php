@@ -34,7 +34,6 @@ class EventBehavior extends ModelBehavior {
 
         $this->settings[$model->alias] = $config;
 
-
     }
 
     /**
@@ -99,7 +98,7 @@ class EventBehavior extends ModelBehavior {
         if(count($events)> 0){
             return $events['Event'];
         } else {
-        	return null;
+            return null;
         }
     }
 }

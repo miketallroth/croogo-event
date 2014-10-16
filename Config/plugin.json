@@ -1,15 +1,15 @@
 {
-	"name": "Event",
-	"description": "Event plugin for attaching event data to nodes and providing a calendar view",
+    "name": "Event",
+    "description": "Event plugin for attaching event data to nodes and providing a calendar view",
 
-	"author": "Thomas Rader",
-	"authorEmail": "tom.rader@claritymediasolutions.com",
-	"authorUrl": "http://claritymediasolutions.com",
+    "author": "Mike Tallroth",
+    "authorEmail": "mike.tallroth@gmail.com",
+    "authorUrl": "http://goclearsky.com",
 
-	"dependencies": {
-		"plugins": [
-			"acl",
-			"extensions"
-		]
-	}
+    "dependencies": {
+        "plugins": [
+            "acl",
+            "extensions"
+        ]
+    }
 }

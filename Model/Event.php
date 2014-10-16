@@ -1,8 +1,8 @@
 <?php
 class Event extends EventAppModel{
-	var $name = 'Event';
+    var $name = 'Event';
 
-	var $belongsTo = array(
-		'Node'
-	);
+    var $belongsTo = array(
+        'Node'
+    );
 }
