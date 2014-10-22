@@ -40,16 +40,6 @@ class EventsController extends EventAppController {
 
     }
 
-	public function hmtview($id = -1){
-
-		$event = array();
-		if(strtolower(Configure::read('Event.use_hold_my_ticket')) == 'yes'){
-			$this->loadModel('Event.HoldMyTicket');
-			$event = array('Event'=>get_object_vars($this->HoldMyTicket->getEvent($id)));
-			$this->set("event", $event);
-		}
-	}
-
     public function calendar(){
     	Configure::write('debug', 0);
 		$this->autoLayout = false;

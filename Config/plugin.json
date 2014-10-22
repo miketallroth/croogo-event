@@ -9,7 +9,9 @@
     "dependencies": {
         "plugins": [
             "acl",
-            "extensions"
+            "extensions",
+            "params",
+            "nodes"
         ]
     }
 }

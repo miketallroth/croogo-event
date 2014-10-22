@@ -1,48 +1,46 @@
 <?php
+
 /**
  * Routes
  *
- * example_routes.php will be loaded in main app/config/routes.php file.
+ * Plugin/Event/Config/routes.php will be loaded
  */
     Croogo::hookRoutes('Event');
+
 /**
  * Behavior
  *
- * This plugin's Event behavior will be attached whenever Node model is loaded.
- * This shouldn't be necessary because we can use hookModelProperty below.
+ * Behavior contains the associated models so they don't get removed.
+ * Use priority 1 so this behavior runs before Containable.
  */
-    //Croogo::hookBehavior('Nodes.Node', 'Event.Event');
+    Croogo::hookBehavior('Node', 'Event.Event', array(
+        'priority' => 1,
+    ));
 
 /**
  * hasOne relationship
  *
- * Define it conditional on the Node being of type event.
+ * Now, Node hasOne Event. Dependent so deletes work.
  */
     Croogo::hookModelProperty('Node', 'hasOne', array('Event' => array(
         'className' => 'Event.Event',
         'foreignKey' => 'node_id',
-        'conditions' => array('Node.type' => 'event'),
+        'dependent' => true,
     )));
 
 /**
- * Component
- *
- * This plugin's Event component will be loaded in ALL controllers.
- */
-    Croogo::hookComponent('Nodes', 'Event.Event');
-/**
  * Helper
  *
- * This plugin's Event helper will be loaded via NodesController.
+ * Adjust output values prior to display.
  */
-    //Croogo::hookHelper('Nodes', 'Event.Event');
+    Croogo::hookHelper('Nodes', 'Event.Event');
+
 /**
  * Admin tab
  *
  * When adding/editing Content (Nodes),
- * an extra tab with title 'Event' will be shown with markup generated from the plugin's admin_tab_node element.
- *
- * Useful for adding form extra form fields if necessary.
+ * an extra tab with title 'Event' will be shown with markup generated
+ * from the plugin's admin_tab_node element.
  */
     Croogo::hookAdminTab('Nodes/admin_add', 'Event', 'event.admin_tab_node_add', array('type'=>array('event')));
     Croogo::hookAdminTab('Nodes/admin_edit', 'Event', 'event.admin_tab_node', array('type'=>array('event')));

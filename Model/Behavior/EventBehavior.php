@@ -14,13 +14,6 @@
 class EventBehavior extends ModelBehavior {
 
     /**
-     * Nodeattachment model
-     *
-     * @var object
-     */
-    private $Event = null;
-
-    /**
      * Setup
      *
      * @param object $model
@@ -31,74 +24,68 @@ class EventBehavior extends ModelBehavior {
         if (is_string($config)) {
                 $config = array($config);
         }
-
         $this->settings[$model->alias] = $config;
-
     }
 
     /**
-     * After find callback
+     * beforeFind
      *
-     * @param object $model
-     * @param array $results
-     * @param boolean $primary
-     * @return array
+     * @param $model the model this behavior is attached to
+     * @param $query the query data
+     * @return the modified query data
      */
-     public function  afterFind(Model $model, $results, $primary = false) {
-
-            parent::afterFind($model, $results, $primary);
-
-            if ($model->type != 'event') {
-                    if ($primary && isset($results[0][$model->alias])) {
-                        foreach ($results AS $i => $result) {
-                            if (isset($results[$i][$model->alias]['title'])) {
-                                $results[$i]['Event'] = $this->_getEvents($model, $result[$model->alias]['id']);
-                            }
-                        }
-                    } elseif (isset($results[$model->alias])) {
-                        if (isset($results[$model->alias]['title'])) {
-                            $results['Event'] = $this->_getEvents($model, $results[$model->alias]['id']);
-                        }
-                    }
+    public function beforeFind(Model $model, $query) {
+        $type = null;
+        if ($model->type != null) {
+            $type = $model->type;
+        } else if (array_key_exists('Node.type',$query['conditions'])) {
+            $type = $query['conditions']['Node.type'];
+        }
+        // TODO
+        // get extended model name from the type's param info
+        if ($type != null) {
+            if (array_key_exists('contain',$query)) {
+                $query['contain'] = Hash::merge(array('Event'),$query['contain']);
+            } else {
+                $query['contain'] = array('Event');
             }
-
-            return $results;
-
+        }
+        return $query;
     }
 
     /**
-     * Get all attachments for node
+     * _getDetailAlias
      *
-     * @param object $model
-     * @param integer $nodeid
-     * @return array
+     * Look in the params of the node type to find the model property.
+     * If nothing, just assume and use Inflector.
+     *
+     * @param $type The Node type
+     * @param @inclPlugin Include the plugin name, if provided.
+     * @return The name of the associated detail model
      */
-    private function _getEvents(&$model, $node_id) {
-        if (!is_object($this->Event)) {
-                $this->Event = ClassRegistry::init('Event.Event');
-        }
-
-
-        // unbind unnecessary models from Node model
-        $model->unbindModel(array(
-            'belongsTo' => array('User'),
-            'hasMany' => array('Comment', 'Meta'),
-            'hasAndBelongsToMany' => array('Taxonomy')
+    protected function _getDetailAlias($targetType, $inclPlugin) {
+        $types = ClassRegistry::init('Taxonomy.Type')->find('all', array(
+            'cache' => array(
+                'name' => 'types',
+                'config' => 'croogo_types',
+            ),
         ));
-
-        $model->recursive = 0;
-
-        App::import('Model', 'Event.Event');
-        $eventmodel = new Event();
-
-        $events = $eventmodel->find('first', array(
-            'conditions' => array('Event.node_id' => $node_id)
-        ));
-
-        if(count($events)> 0){
-            return $events['Event'];
-        } else {
-            return null;
+        $alias = '';
+        foreach ($types as $type) {
+            $p = $type['Params'];
+            if (isset($p['extended']) && $p['extended']) {
+                if (isset($p['model']) && $p['model']) {
+                    $alias = $p['model'];
+                }
+                if ($inclPlugin && isset($p['plugin']) && $p['plugin']) {
+                    $alias = $p['plugin'] . '.' . $alias;
+                }
+                break;
+            } else {
+                //$alias = Inflector::
+            }
         }
+        return $alias;
     }
+
 }

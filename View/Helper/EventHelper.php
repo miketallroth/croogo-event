@@ -78,12 +78,13 @@ class EventHelper extends AppHelper {
  * @return string
  */
     public function beforeNodeBody() {
-        CakeLog::write('debug',print_r($this->Layout->node,true));
-		if(count($this->Layout->node['Event']) > 0 && !empty($this->Layout->node['Event']['start_date']) && !empty($this->Layout->node['Event']['end_date'])){
-	        return '<div class="event-data">
-	        	From: '.date(Configure::read('Reading.date_time_format'), strtotime($this->Layout->node['Event']['start_date'])).'<br />
-	        	To: '.date(Configure::read('Reading.date_time_format'), strtotime($this->Layout->node['Event']['end_date'])).'
-	        </div>';
+        if ($this->Layout->node['Node']['type'] == 'event') {
+		    if(count($this->Layout->node['Event']) > 0 && !empty($this->Layout->node['Event']['start_date']) && !empty($this->Layout->node['Event']['end_date'])){
+	            return '<div class="event-data">
+	        	    From: '.date(Configure::read('Reading.date_time_format'), strtotime($this->Layout->node['Event']['start_date'])).'<br />
+	        	    To: '.date(Configure::read('Reading.date_time_format'), strtotime($this->Layout->node['Event']['end_date'])).'
+	            </div>';
+            }
         }
     }
 /**
